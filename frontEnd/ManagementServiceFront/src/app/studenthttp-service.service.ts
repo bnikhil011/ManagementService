@@ -1,30 +1,40 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-
+import { Injectable, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Student } from './student_model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class StudenthttpServiceService {
-
+export class StudenthttpServiceService implements OnInit {
+  students:Student[];
   constructor(private hc : HttpClient) { 
+    
+    
+  }
+  ngOnInit(): void {
+    console.log("htpservice.ts ngoninit");
+  }
+  getAllStudents():Observable<Student[]>
+  {console.log("http Service getAllCalled");
+    return this.hc.get<Student[]>('http://localhost:8080/students/getAll');
 
   }
-  getAllStudents()
+  
+  addStudent( student : Student):Observable<Student>
   {
-    return this.hc.get('http://localhost:8080/students/getAll').subscribe((response)=>{console.log(response)});
+    console.log("Adding "+ student);
+    return this.hc.post<Student>('http://localhost:8080/students/add',student);
   }
-  getStudent(id:number)
+  updateStudent(student : Object):Observable<Student>
   {
-    return this.hc.get('http://localhost:8080/students/get/'+id).subscribe((response)=>{console.log(response)});
+    return this.hc.put<Student>('http://localhost:8080/students/getAll',student);
   }
-  addStudent( student : Object)
+  deleteStudent(student:Student):Observable<void>
   {
-    return this.hc.get('http://localhost:8080/students/getAll').subscribe((response)=>{console.log(response)});
-  }
-  updateStudent(student : Object)
-  {
-    return this.hc.get('http://localhost:8080/students/getAll').subscribe((response)=>{console.log(response)});
+    console.log('http://localhost:8080/students/delete/'+ student.id)
+    return this.hc.delete<void>('http://localhost:8080/students/delete/'+ student.id);
+
   }
 
  

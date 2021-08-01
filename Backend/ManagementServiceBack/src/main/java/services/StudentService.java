@@ -30,4 +30,8 @@ public class StudentService {
 	{
 		return studentDao.save(student);
 	}
+	public void deleteStudent(Student student)
+	{
+		studentDao.delete(student);
+	}
 }
